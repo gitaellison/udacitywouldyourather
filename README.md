@@ -9,6 +9,7 @@ Most of the commits in this repository correspond to videos in the program.
 * start the Project - `npm start`
 * if you receive this error: TypeError: __WEBPACK_IMPORTED_MODULE_0_react___default.a.createContext is not a function, 
 please get the latest version of react `npm install react@latest`, then `npm install`, then `npm start`
+* make sure this is running in Chrome
 
 ## Description
 
