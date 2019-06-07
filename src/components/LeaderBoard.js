@@ -46,12 +46,13 @@ class LeaderBoard extends Component {
         user:{
           id: user,
           created: this.sortCreatedList(user), 
-          answered: this.sortAnsweredList(user)
+          answered: this.sortAnsweredList(user), 
+          total: this.sortCreatedList(user) + this.sortAnsweredList(user)
           }
       };
      arr.push(obj);
     })
-    arr.sort(function(a,b){return arr[a]-arr[b]});
+    arr.sort((a,b) => b.user.total - a.user.total);
     return arr;
   }
 
@@ -69,13 +70,18 @@ class LeaderBoard extends Component {
       <b>{users[id].name}</b>
       <div>Answered Questions: {u.answered}</div>
       <div>Created Questions: {u.created}</div>
-      <div>Total: {u.answered + u.created}</div>
+      <div>Total: {u.total}</div>
     </div>)
      })
      return stuff;
   }
   render() {
+    if(!this.props.loggedIn){
+      return <Redirect to='/' />
+    }
+    
   this.sortUsers();
+
 
   return(
   <div class='center'>
@@ -87,7 +93,7 @@ class LeaderBoard extends Component {
 
 function mapStateToProps ({ authedUser, questions , users}) {
   return {
-    loggedIn: authedUser != null, 
+    loggedIn: authedUser != false, 
     questions, 
     users
   }

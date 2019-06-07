@@ -23,6 +23,7 @@ class LogIn extends Component {
       return (
         <div class="container">
           <div  className="center">
+          <p>{React.version}</p>
            <h2>Who are you?</h2>
            {Object.values(this.props.users).map((user) => (
        

@@ -8,7 +8,11 @@ class Dashboard extends Component {
   state = {
     answeredQuestions: [], 
     unansweredQuestions: [], 
-    displayAnswered: true
+    displayAnswered: false
+  }
+
+  componentDidMount(){
+    this.GetUnansweredQuestions();
   }
 
   GetAnsweredQuestions(){
@@ -33,7 +37,7 @@ class Dashboard extends Component {
   GetUnansweredQuestions(){
       const {questions, authedUser} = this.props
       const keys = []
-      const arr = Object.keys(questions);
+      const arr = Object.keys(questions).sort((a,b) => questions[b].timestamp - questions[a].timestamp);
         arr.forEach(element => {
           if(!questions[element]["optionOne"]["votes"].includes(authedUser)){
            keys.push(element);
@@ -55,9 +59,8 @@ class Dashboard extends Component {
       return <div>{this.state.unansweredQuestions.map((key) => <UnansweredQuestion id={key}/>)}</div>
     }
   }
-  render() {
-    console.log("logged in:" + this.props.loggedIn)
 
+  render() {
     if (!this.props.loggedIn) {
       return <Redirect to='/' />
     }
@@ -80,7 +83,7 @@ function mapStateToProps ({ authedUser, questions, users }) {
     questions,
     users,
     authedUser,
-    loggedIn: authedUser != null
+    loggedIn: authedUser != false
   }
 }
 

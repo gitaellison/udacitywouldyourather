@@ -23,6 +23,10 @@ class AnsweredQuestion extends Component {
   render() {
     const { question, id, authedUser } = this.props
 
+    if(!this.props.loggedIn){
+      return <Redirect to='/' />
+    }
+  
     if (question === null) {
       return <p> 404 Error This Question doesn't exist</p>
     }
@@ -64,8 +68,9 @@ function mapStateToProps ({authedUser, users, questions}, { id }) {
   return {
     authedUser,
     question: question, 
-    user: users[authedUser]
-  }
+    user: users[authedUser], 
+    loggedIn: authedUser != false, 
+ }
 }
 
 export default connect(mapStateToProps)(AnsweredQuestion)

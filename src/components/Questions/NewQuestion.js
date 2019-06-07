@@ -7,6 +7,7 @@ class NewQuestion extends Component {
   state = {
     optionOne: '',
     optionTwo: '',
+    redirect: false
   }
   handleChangeOne = (e) => {
     const text = e.target.value
@@ -32,12 +33,17 @@ class NewQuestion extends Component {
 
     this.setState(() => ({
       optionOne: '', 
-      optionTwo: ''
+      optionTwo: '', 
+      redirect: true
     }))
   }
   render() {
-    if (!this.props.loggedIn) {
+    if(!this.props.loggedIn){
       return <Redirect to='/' />
+    }
+     
+    if (this.state.redirect === true) {
+      return <Redirect to='/home' />
     }
     const { text } = this.state
 
@@ -73,7 +79,7 @@ class NewQuestion extends Component {
 
 function mapStateToProps ({ authedUser }) {
   return {
-    loggedIn: authedUser != null
+    loggedIn: authedUser != false
   }
 }
 

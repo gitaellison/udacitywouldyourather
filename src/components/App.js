@@ -26,7 +26,7 @@ class App extends Component {
           render={() => (<Nav /> )}
           /> 
           <Route
-          path="/new"
+          path="/add"
           render={() => (<Nav /> )}
           />
           <Route
@@ -43,10 +43,11 @@ class App extends Component {
               <div>
                   <Route path="/" exact component={Login} />
                   <Route path="/home" component={Dashboard}  />
-                  <Route path="/new" component={NewQuestion} />
+                  <Route path="/add" component={NewQuestion} />
                   <Route path="/leaderboard" component={LeaderBoard}/>
                   <Route path="/logout" component={LogOut}/>
                   <Route path = "/questions/:id" component = {PollDetails}/>
+                  <Route path = "/questions/" component = {PollDetails}/>
                 </div>}
           </div>
         </Fragment>
