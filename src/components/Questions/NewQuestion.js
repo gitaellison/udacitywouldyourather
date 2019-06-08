@@ -38,9 +38,12 @@ class NewQuestion extends Component {
     }))
   }
   render() {
-    if(!this.props.loggedIn){
-      return <Redirect to='/' />
-    }
+    if (!this.props.loggedIn) {
+      return <Redirect to={{
+      pathname: '/',
+      state: { priorPath: '/add' }
+    }}/>
+  }
      
     if (this.state.redirect === true) {
       return <Redirect to='/home' />

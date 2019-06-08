@@ -7,9 +7,7 @@ import { Redirect } from 'react-router-dom'
 class PollDetails extends Component {
 
   render() {
-    if(!this.props.loggedIn){
-      return <Redirect to='/' />
-    }
+
   
     const { questions, match} = this.props
     const id = match.params.id;
@@ -19,6 +17,12 @@ class PollDetails extends Component {
       return <p className='center'> 404 Error This Question doesn't exist</p>
     }
 
+    if (!this.props.loggedIn) {
+      return <Redirect to={{
+      pathname: '/',
+      state: { priorPath: '/questions/'+ id }
+    }}/>
+  }
     const optionOneVotes = question["optionOne"]["votes"].length;
     const optionTwoVotes =  question["optionTwo"]["votes"].length;
     const totalVotes = optionOneVotes + optionTwoVotes;

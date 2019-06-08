@@ -6,15 +6,19 @@ import UnansweredQuestion from './Questions/UnansweredQuestion';
 
 class Dashboard extends Component {
   state = {
-    answeredQuestions: [], 
-    unansweredQuestions: [], 
     displayAnswered: false
   }
 
-  componentDidMount(){
-    this.GetUnansweredQuestions();
+
+  displayAnswered(){
+    this.setState({displayAnswered: true});
+
   }
 
+  displayUnanswered(){
+    this.setState({displayAnswered: false});
+
+  }
   GetAnsweredQuestions(){
     const {users, authedUser, questions} = this.props
     const authedAnswered = users[authedUser].answers
@@ -31,45 +35,52 @@ class Dashboard extends Component {
         }
       });
 
-    this.setState({answeredQuestions:keys});
-    this.setState({displayAnswered: true});
+      return keys;
 }
   GetUnansweredQuestions(){
       const {questions, authedUser} = this.props
       const keys = []
       const arr = Object.keys(questions).sort((a,b) => questions[b].timestamp - questions[a].timestamp);
         arr.forEach(element => {
-          if(!questions[element]["optionOne"]["votes"].includes(authedUser)){
-           keys.push(element);
-          }
-          if(!questions[element]["optionTwo"]["votes"].includes(authedUser)){
+          if(!questions[element]["optionOne"]["votes"].includes(authedUser) && 
+          !questions[element]["optionTwo"]["votes"].includes(authedUser)){
             keys.push(element);
           }
         });
-  
-      this.setState({unansweredQuestions:keys});
-      this.setState({displayAnswered: false});
+
+        return keys;
       }
       
   ShowQuestions(){
     if(this.state.displayAnswered){
-      return <div>{this.state.answeredQuestions.map((key) => <AnsweredQuestion id={key}/>)}</div>
+      return <div>{this.GetAnsweredQuestions().map((key) => <AnsweredQuestion id={key} key={this.uuidv4()}/>)}</div>
     }
     else{
-      return <div>{this.state.unansweredQuestions.map((key) => <UnansweredQuestion id={key}/>)}</div>
+      return <div>{this.GetUnansweredQuestions().map((key) => <UnansweredQuestion id={key} key={this.uuidv4()}/>)}</div>
     }
   }
 
+  ///took this from stackoverflow creating unique id
+   uuidv4() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
+  }
   render() {
     if (!this.props.loggedIn) {
-      return <Redirect to='/' />
+        return <Redirect to={{
+        pathname: '/',
+        state: { priorPath: '/home' }
+      }}/>
     }
+
     return (
       <div  className='center'>
         <h3>Your Timeline</h3>
         <ul className='dashboard-list'>
-        <button onClick={() => this.GetAnsweredQuestions()}>Answered Questions</button>
-        <button onClick={() => this.GetUnansweredQuestions()}>Unanswered Questions</button>
+        <button onClick={() => this.displayAnswered()}>Answered Questions</button>
+        <button onClick={() => this.displayUnanswered()}>Unanswered Questions</button>
         {this.ShowQuestions()}
         </ul>
       </div>

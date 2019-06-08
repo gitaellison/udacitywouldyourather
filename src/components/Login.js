@@ -17,11 +17,15 @@ class LogIn extends Component {
       this.setState({ redirect: true })
     }
     render() {
+      if(this.props.location !== undefined && this.state.redirect){
+        return <Redirect to= {this.props.location.state.priorPath} />
+      }
+
       if (this.state.redirect) {
         return <Redirect to='/home' />
       }
       return (
-        <div class="container">
+        <div className="container">
           <div  className="center">
           <p>{React.version}</p>
            <h2>Who are you?</h2>

@@ -76,15 +76,18 @@ class LeaderBoard extends Component {
      return stuff;
   }
   render() {
-    if(!this.props.loggedIn){
-      return <Redirect to='/' />
-    }
+    if (!this.props.loggedIn) {
+      return <Redirect to={{
+      pathname: '/',
+      state: { priorPath: '/leaderboard' }
+    }}/>
+  }
     
   this.sortUsers();
 
 
   return(
-  <div class='center'>
+  <div className='center'>
     {this.showUsers()}
   </div>
   )

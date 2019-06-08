@@ -11,6 +11,7 @@ import Nav from './Nav'
 import LogOut from './LogOut'
 import PollDetails from './Questions/PollDetails';
 
+
 class App extends Component {
   componentDidMount() {
     this.props.dispatch(handleInitialData())
@@ -47,7 +48,6 @@ class App extends Component {
                   <Route path="/leaderboard" component={LeaderBoard}/>
                   <Route path="/logout" component={LogOut}/>
                   <Route path = "/questions/:id" component = {PollDetails}/>
-                  <Route path = "/questions/" component = {PollDetails}/>
                 </div>}
           </div>
         </Fragment>
