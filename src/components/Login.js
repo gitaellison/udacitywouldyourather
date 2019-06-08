@@ -17,7 +17,7 @@ class LogIn extends Component {
       this.setState({ redirect: true })
     }
     render() {
-      if(this.props.location !== undefined && this.state.redirect){
+      if(this.props.location != undefined && this.props.location.state !== undefined && this.state.redirect){
         return <Redirect to= {this.props.location.state.priorPath} />
       }
 
