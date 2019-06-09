@@ -9,20 +9,23 @@ class PollDetails extends Component {
   render() {
 
   
-    const { questions, match} = this.props
+    const { questions, match, authedUser} = this.props
     const id = match.params.id;
     const question = questions[id];
-     
+    if (!this.props.loggedIn) {
+      return <Redirect to={{
+      pathname: '/',
+      state: { priorPath: '/questions/'+ id}
+    }}/>
+  }
     if (question === undefined) {
       return <p className='center'> 404 Error This Question doesn't exist</p>
     }
 
-    if (!this.props.loggedIn) {
-      return <Redirect to={{
-      pathname: '/',
-      state: { priorPath: '/questions/'+ id }
-    }}/>
-  }
+    if(!question["optionOne"]["votes"].includes(authedUser) && !question["optionTwo"]["votes"].includes(authedUser)){
+      return <Redirect to= '/home'/>
+    }
+
     const optionOneVotes = question["optionOne"]["votes"].length;
     const optionTwoVotes =  question["optionTwo"]["votes"].length;
     const totalVotes = optionOneVotes + optionTwoVotes;
@@ -41,7 +44,8 @@ class PollDetails extends Component {
         <div>Percentage: {optionOneP}</div>
         <div><b>Would you rather {question["optionTwo"].text}</b></div>
         <div>Percentage: {optionTwoP}</div>
-        <div>TotalVotes: {totalVotes}</div>
+        <div>Total Votes Option One: {optionOneVotes}</div>
+        <div>Total Votes Option Two: {optionTwoVotes}</div>
       </div>
     )
   }
@@ -51,7 +55,8 @@ function mapStateToProps ({ questions, users , authedUser}) {
     return {
       questions, 
       users, 
-      loggedIn: authedUser != false
+      loggedIn: authedUser != false, 
+      authedUser
     }
   }
   
